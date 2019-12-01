@@ -11,7 +11,7 @@ class ProductPage extends React.Component {
     console.log(props);
 
     this.state = {
-      id: props.location.state.id, 
+      id: props.location.state.product,
       barcode: props.location.state.barcode
     }
     console.log("made product page");
@@ -46,9 +46,11 @@ class ProductPage extends React.Component {
     `);
 
     if(loading) return <h1>Loading...</h1>;
-    if(error) return <h1>Error :(</h1>;
-
+    if(error) return <h1>Missing Barcode</h1>;
     let product = data.products[0];
+    if(product === undefined){
+      return <h1>Missing Barcode</h1>
+    }
     return (
       <div>
         <ul>
