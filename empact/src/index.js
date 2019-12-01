@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Home from './Components/Home';
 import SearchPage from './Components/SearchPage';
 import BarcodeScanner from './Components/BarcodeScanner';
+import ProductPage from './Components/ProductPage';
 import {Route, BrowserRouter, Switch} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-boost';
@@ -22,6 +23,7 @@ class Application extends React.Component {
             <Route exact path = {"/"} component = {Home}/>
             <Route path = {"/SearchPage"} component = {SearchPage}  />
             <Route path = {"/BarcodeScanner"} component = {BarcodeScanner}  />
+            <Route path = {"/ProductPage"} component = {ProductPage} />
           </Switch>
         </BrowserRouter>
       </ApolloProvider>

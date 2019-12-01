@@ -2,6 +2,9 @@ import React from 'react';
 import './Home.css';
 import {Redirect} from "react-router-dom"
 
+import { gql } from 'apollo-boost';
+import { useQuery } from '@apollo/react-hooks';
+
 class Home extends React.Component {
 
   constructor(props) {
