@@ -43,50 +43,25 @@ class BarcodeScanner extends React.Component {
             console.log("Starting Quagga")
             Quagga.start();
         });
-        Quagga.onDetected(this.quaggaOnDetected);
+        Quagga.onDetected(this.quaggaOnDetected.bind(this));
     }
 
     componentWillUnmount() {
         Quagga.offDetected(this.quaggaOnDetected);
+        Quagga.stop();
     }
 
-    async quaggaOnDetected(result) {
+    quaggaOnDetected(result) {
         console.log(result.codeResult.code);
-        const {data} = await useQuery(gql`
-            {
-                products(barcode:"${result.codeResult.code}"){
-                    id
-                    name
-                    imageURL
-                    price
-                    weight
-                    company{
-                      id
-                      name
-                      logoURL
-                    }
-                    environmentalData {
-                        origin
-                        transport
-                        transportCO2
-                        recyclablePlastic
-                        nonRecyclablePlastic
-                        waterConsumption
-                        energyConsumption
-                        greenScore
-                    }
-                }
-            }
-        `);
-        console.log(data);
-        return data;
+        this.setState({barcode: result.codeResult.code, redirect: true})
     }
 
     render() {
         if (this.state.redirect) {
           console.log("asd");
           return <Redirect push to={{
-            pathname: "/ScanBarcode"
+            pathname: "/ProductPage",
+            state: {barcode: this.state.barcode}
           }}/>
         }else{
           return (

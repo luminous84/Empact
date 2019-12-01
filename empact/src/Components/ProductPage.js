@@ -47,7 +47,6 @@ class ProductPage extends React.Component {
 
     if(loading) return <h1>Loading...</h1>;
     if(error) return <h1>Error :(</h1>;
-
     let product = data.products[0];
     return (
       <div>
