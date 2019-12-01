@@ -30,6 +30,7 @@ gql`
           nonRecyclablePlastic
           waterConsumption
           energyConsumption
+          greenScore
         }
       }
     }
@@ -53,6 +54,7 @@ gql`
           nonRecyclablePlastic
           waterConsumption
           energyConsumption
+          greenScore
         }
       }
     }
