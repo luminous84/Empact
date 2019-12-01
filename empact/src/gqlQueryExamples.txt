@@ -1,0 +1,61 @@
+
+//SEARCH PAGE
+//searchProductsSummaryByName
+gql`
+    {
+      products(name:"${name}"){
+          id
+          name
+          imageURL
+      }
+    }
+  `
+
+//BARCODE SCANNER
+//getProductDetailsByBarcode
+gql`
+    {
+      products(barcode:"${barcode}"){
+        id
+        name
+        imageURL
+        price
+        weight
+        company
+        environmentalData: {
+          origin
+          transport
+          transportCO2
+          recyclablePlastic
+          nonRecyclablePlastic
+          waterConsumption
+          energyConsumption
+          greenScore
+        }
+      }
+    }
+  `
+//PRODUCT PAGE
+//getProductDetailsByID
+gql`
+    {
+      products(id:"${id}"){
+        id
+        name
+        imageURL
+        price
+        weight
+        company
+        environmentalData: {
+          origin
+          transport
+          transportCO2
+          recyclablePlastic
+          nonRecyclablePlastic
+          waterConsumption
+          energyConsumption
+          greenScore
+        }
+      }
+    }
+  `

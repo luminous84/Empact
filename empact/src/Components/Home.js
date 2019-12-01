@@ -1,6 +1,10 @@
 import React from 'react';
 import './Home.css';
-import {Redirect} from "react-router-dom"
+import {Redirect} from "react-router-dom";
+
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+
 
 class Home extends React.Component {
 
@@ -11,6 +15,24 @@ class Home extends React.Component {
       text: ""
     };
     this.searchClicked = this.searchClicked.bind(this);
+  }
+
+  testQuery(){
+    const {loading, error, data} = useQuery(
+      gql`
+      {
+        products(name:"prod"){
+            id
+            name
+        }
+      }
+    `)
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+    
+    console.log(data);
+    return <p>Loaded :)</p>;
   }
 
   searchClicked(event) {
@@ -47,6 +69,7 @@ class Home extends React.Component {
             <button>
               Scanner
             </button>
+            <this.testQuery></this.testQuery>
           </header>
         </div>
       );

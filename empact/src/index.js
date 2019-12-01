@@ -2,19 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Home from './Components/Home';
 import SearchPage from './Components/SearchPage';
+import BarcodeScanner from './Components/BarcodeScanner';
 import {Route, BrowserRouter, Switch} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const apolloClient = new ApolloClient({
+  uri: window.location.protocol + "//" + window.location.hostname + ":4000/graphql",
+});
 
 class Application extends React.Component {
 
   render () {
     return (
-      <BrowserRouter basename = {"/"} >
-        <Switch>
-          <Route exact path = {"/"} component = {Home} />
-          <Route path = {"/SearchPage"} component = {SearchPage}  />
-        </Switch>
-      </BrowserRouter>
+      <ApolloProvider client={apolloClient}>
+        <BrowserRouter basename = {"/"} >
+          <Switch>
+            <Route exact path = {"/"} component = {Home}/>
+            <Route path = {"/SearchPage"} component = {SearchPage}  />
+            <Route path = {"/ScanBarcode"} component = {BarcodeScanner}  />
+          </Switch>
+        </BrowserRouter>
+      </ApolloProvider>
     );
   }
 }
