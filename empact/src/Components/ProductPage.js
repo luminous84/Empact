@@ -11,7 +11,7 @@ class ProductPage extends React.Component {
     console.log(props);
 
     this.state = {
-      id: props.location.state.id, 
+      id: props.location.state.product,
       barcode: props.location.state.barcode
     }
     console.log("made product page");
