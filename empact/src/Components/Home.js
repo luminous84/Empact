@@ -1,7 +1,8 @@
 import React from 'react';
 import './Home.css';
-import {Redirect} from "react-router-dom"
-
+import {Redirect} from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -73,15 +74,15 @@ class Home extends React.Component {
             </h1>
             <input type="text" width="500px" onChange={this.collectSearchInput.bind(this)}>
             </input>
-            <button onClick={this.searchClicked}>
+            <Button variant="contained" color="primary" onClick={this.searchClicked}>
               Search
-            </button>
+            </Button>
             <h1>
               Barcode Scanner
             </h1>
-            <button onClick={this.scannerClicked}>
+            <Button variant="contained" color="primary" onClick={this.scannerClicked}>
               Scanner
-            </button>
+            </Button>
 
           </header>
         </div>
