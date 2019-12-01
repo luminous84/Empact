@@ -4,7 +4,7 @@ import {Redirect} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-
+import { useQuery } from '@apollo/react-hooks';
 
 class Home extends React.Component {
 
@@ -56,7 +56,8 @@ class Home extends React.Component {
   render() {
     if (this.state.redirect) {
       return <Redirect push to={{
-        pathname: "/SearchPage"
+        pathname: "/SearchPage",
+        state: {search:this.state.text}
       }}/>
     }
     else if (this.state.directed) {
