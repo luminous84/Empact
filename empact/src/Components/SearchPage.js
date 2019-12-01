@@ -10,7 +10,9 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
-
+import EcoIcon from '@material-ui/icons/Eco';
+import { styled } from '@material-ui/styles';
+import { Visibility } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,14 +40,17 @@ class SearchPage extends React.Component {
     super(props);
     this.state = {
       search: props.location.state.search,
-      product:""
+      redirect: false
     };
 
   }
 
-  productClicked(event){
+  productClicked(event, id){
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(id);
     this.setState({
-      product:event.target.value.id
+      product: id,
+      redirect: true
     });
   };
 
@@ -72,6 +77,7 @@ class SearchPage extends React.Component {
             waterConsumption
             energyConsumption
             greenScore
+            distance
           }
         }
       }
@@ -82,54 +88,56 @@ class SearchPage extends React.Component {
     if(loading) return <h1>Loading...</h1>;
     if(error) return <h1>Error :(</h1>;
 
-    if(this.state.product ==="") {
-      return (
-        <div className={classes.root} >
-          {data.products.map((product, index) => {
-            return (<Paper className={classes.paper} onClick={this.productClicked} id={product.id}>
-            <Grid container spacing={2}>
-              <Grid item>
-                <ButtonBase className={classes.image}>
-                  <img className={classes.img} alt="Photo" src={product.imageURL} />
-                </ButtonBase>
-              </Grid>
-              <Grid item xs={12} sm container>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography gutterBottom variant="subtitle1">
-                      <h3>{product.name}</h3>
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
+    let a = [1,2,3,4,5]; 
 
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {product.company.name}
-                    </Typography>
-                  </Grid>
+    return (
+      <div className={classes.root} >
+        {data.products.map((product, index) => {
+          return (<Paper className={classes.paper} onClick={(e) => props.parent.productClicked(e, product.id)} key={product.id} id={product.id}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <ButtonBase className={classes.image}>
+                <img className={classes.img} alt="Photo" src={product.imageURL} />
+              </ButtonBase>
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1">
+                    <h3>{product.name}</h3>
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {product.company.name}
+                  </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1">Score: {product.environmentalData.greenScore}</Typography>
-                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle1">Score: {a.slice(0, product.environmentalData.greenScore).map(i => { return (<EcoIcon></EcoIcon>)})}</Typography>
               </Grid>
             </Grid>
-          </Paper>);
-          })}
-        </div>
-      );
-    }else{
-
-      return <Redirect push to={{
-        pathname: "/ProductPage",
-        product: this.state.product
-      }}/>
-    }
+          </Grid>
+        </Paper>);
+        })}
+      </div>
+    );
+    
   }
 
   render(){
-
-    return(
-      <this.grid search={this.state.search}></this.grid>
-    )
+    if(!this.state.redirect) {
+      return(
+        <this.grid search={this.state.search} parent={this}></this.grid>
+      )
+    }else{
+      console.log(this.state.product);
+      return <Redirect push to={{
+        pathname: "/ProductPage",
+        state: {id: this.state.product}
+      }}/>
+    }
 
   }
 }

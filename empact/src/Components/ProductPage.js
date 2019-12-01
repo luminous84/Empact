@@ -4,6 +4,9 @@ import './ProductPage';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
+import Typography from '@material-ui/core/Typography';
+import EcoIcon from '@material-ui/icons/Eco';
+
 class ProductPage extends React.Component {
 
   constructor(props) {
@@ -11,9 +14,10 @@ class ProductPage extends React.Component {
     console.log(props);
 
     this.state = {
-      id: props.location.state.product,
+      id: props.location.state.id,
       barcode: props.location.state.barcode
     }
+    console.log(this.state);
     console.log("made product page");
   }
 
@@ -40,6 +44,7 @@ class ProductPage extends React.Component {
             waterConsumption
             energyConsumption
             greenScore
+            distance
           }
         }
       }
@@ -51,22 +56,29 @@ class ProductPage extends React.Component {
     if(product === undefined){
       return <h1>Missing Barcode</h1>
     }
+    let a = [1,2,3,4,5]
+    console.log(product);
+    console.log(product.environmentalData.greenScore);
     return (
       <div>
-        <ul>
-          <h1>Company: {product.company.name} Name: {product.name} </h1>
-          <h2>Price: {product.price} Green score: {product.environmentalData.greenscore}</h2>
-          <p>Picture goes here</p>
-          <li>Weight: {product.weight}</li>
-          <li>Origin: {product.environmentalData.origin}</li>
-          <li>Transport: {product.environmentalData.transport}</li>
-          <li>TransportCO2: {product.environmentalData.transportCO2}</li>
-          <li>Recyclable Plastic: {product.environmentalData.recyclablePlastic}</li>
-          <li>Non-Recyclable Plastic:{product.environmentalData.nonRecyclablePlastic}</li>
-          <li>Water Consumption: {product.environmentalData.waterConsumption}</li>
-          <li>Energy Consumption: {product.environmentalData.energyConsumption}</li>
-
-        </ul>
+          <Typography variant="h2">{product.company.name} - {product.name}</Typography>
+          <Typography variant="h3"> Green score: {a.slice(0, product.environmentalData.greenScore).map(i => { return (<EcoIcon></EcoIcon>)})} </Typography>
+          <Typography variant="h4">£{product.price}</Typography>
+          <img src={product.imageURL} />
+          <Typography variant="h4">Transport</Typography>
+          <Typography variant="body2">
+          This product was manufactured in {product.environmentalData.origin} and travelled {product.environmentalData.distance} km to get to you.
+          <br />
+          The product was transported by {product.environmentalData.transport} and this produced {product.environmentalData.transportCO2}g CO2.
+          </Typography>
+          <Typography variant="h4">Materials</Typography>
+          <Typography variant="body2">
+          This product and it's packaging contains {product.environmentalData.recyclablePlastic}g of Recyclable and {product.environmentalData.nonRecyclablePlastic}g of Non-Recyclable Plastic.
+          </Typography>
+          <Typography variant="h4">Production</Typography>
+          <Typography variant="body2">
+          This product required {product.environmentalData.waterConsumption} litres of water and {product.environmentalData.energyConsumption} kW of electricity to produce.
+          </Typography>
       </div>
     );
   }
