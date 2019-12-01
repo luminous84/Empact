@@ -8,14 +8,39 @@ class Home extends React.Component {
     super(props);
     this.state = {
       redirect: false,
+      directed: false,
       text: ""
     };
     this.searchClicked = this.searchClicked.bind(this);
+    this.scannerClicked = this.scannerClicked.bind(this);
+  }
+
+  testQuery(){
+    const {loading, error, data} = useQuery(
+      gql`
+      {
+        products(name:"prod"){
+            id
+            name
+        }
+      }
+    `)
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+
+    console.log(data);
+    return <p>Loaded :)</p>;
   }
 
   searchClicked(event) {
     this.setState({
       redirect: true
+    });
+  };
+  scannerClicked(event) {
+    this.setState({
+      directed: true
     });
   };
 
@@ -30,7 +55,13 @@ class Home extends React.Component {
         pathname: "/SearchPage",
         state: {search:this.state.text}
       }}/>
-    }else{
+    }
+    else if (this.state.directed) {
+      return <Redirect push to={{
+        pathname: "/BarcodeScanner"
+      }}/>
+    }
+    else{
       return (
         <div className="App">
           <header className="App-header">
@@ -45,9 +76,10 @@ class Home extends React.Component {
             <h1>
               Barcode Scanner
             </h1>
-            <button>
+            <button onClick={this.scannerClicked}>
               Scanner
             </button>
+
           </header>
         </div>
       );

@@ -21,7 +21,7 @@ class Application extends React.Component {
           <Switch>
             <Route exact path = {"/"} component = {Home}/>
             <Route path = {"/SearchPage"} component = {SearchPage}  />
-            <Route path = {"/ScanBarcode"} component = {BarcodeScanner}  />
+            <Route path = {"/BarcodeScanner"} component = {BarcodeScanner}  />
           </Switch>
         </BrowserRouter>
       </ApolloProvider>
