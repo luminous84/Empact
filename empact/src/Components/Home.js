@@ -7,21 +7,25 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false
+      redirect: false,
+      text: ""
     };
     this.searchClicked = this.searchClicked.bind(this);
   }
 
   searchClicked(event) {
-    console.log("as");
     this.setState({
       redirect: true
     });
   };
 
+  collectSearchInput(event) {
+    console.log(event.target.value);
+    this.setState({text:event.target.value});
+  }
+
   render() {
     if (this.state.redirect) {
-      console.log("asd");
       return <Redirect push to={{
         pathname: "/SearchPage"
       }}/>
@@ -32,7 +36,7 @@ class Home extends React.Component {
             <h1>
               Search
             </h1>
-            <input type="text" width="500px">
+            <input type="text" width="500px" onChange={this.collectSearchInput.bind(this)}>
             </input>
             <button onClick={this.searchClicked}>
               Search

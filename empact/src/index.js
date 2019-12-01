@@ -11,7 +11,7 @@ class Application extends React.Component {
     return (
       <BrowserRouter basename = {"/"} >
         <Switch>
-          <Route path = {"/"} component = {Home} exact />
+          <Route exact path = {"/"} component = {Home} />
           <Route path = {"/SearchPage"} component = {SearchPage}  />
         </Switch>
       </BrowserRouter>
