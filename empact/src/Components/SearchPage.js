@@ -7,6 +7,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
+import { gql } from 'apollo-boost';
+import { useQuery } from '@apollo/react-hooks';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 2,
@@ -28,51 +32,91 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// class SearchPage extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       environmentalData: ['Company','Name','Score']
-//     };
-//   }
-//   render(){
-export default function ComplexGrid() {
-  const classes = useStyles();
+class SearchPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: props.location.state.search
+    };
 
-  let environmentalData = ['Company','Name','99%','https://img.etimg.com/thumb/msid-68333505,width-643,imgsize-204154,resizemode-4/googlechrome.jpg']
+  }
 
-  return (
-    <div className={classes.root} >
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="Photo" src={environmentalData[3]} />
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
-                  <h3>{environmentalData[1]}</h3>
-                </Typography>
-                <Typography variant="body2" gutterBottom>
+  grid(props){
+    const {data, loading, error} = useQuery(
+      gql`
+      {
+        products(name:"${props.search}"){
+          id
+          name
+          imageURL
+          price
+          weight
+          company {
+            name,
+            logoURL
+          }
+          environmentalData {
+            origin
+            transport
+            transportCO2
+            recyclablePlastic
+            nonRecyclablePlastic
+            waterConsumption
+            energyConsumption
+            greenScore
+          }
+        }
+      }
+    `);
 
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {environmentalData[0]}
-                </Typography>
+    const classes = useStyles();
+
+    if(loading) return <h1>Loading...</h1>;
+    if(error) return <h1>Error :(</h1>;
+
+    return (
+      <div className={classes.root} >
+        {data.products.map((product, index) => {
+          return (<Paper className={classes.paper}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <ButtonBase className={classes.image}>
+                <img className={classes.img} alt="Photo" src={product.imageURL} />
+              </ButtonBase>
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1">
+                    <h3>{product.name}</h3>
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+  
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {product.company.name}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle1">Score: {product.environmentalData.greenScore}</Typography>
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">Score: {environmentalData[2]}</Typography>
-            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </div>
-  );
+        </Paper>);
+        })}
+      </div>
+    );
+    
+  }
+
+
+  render(){
+
+    return(
+      <this.grid search={this.state.search}></this.grid>
+    )
+    
+  }
 }
-//   }
-// };
-// export default SearchPage;
+export default SearchPage;

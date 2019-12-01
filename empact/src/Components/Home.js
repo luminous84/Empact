@@ -4,7 +4,6 @@ import {Redirect} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
 
 class Home extends React.Component {
 
