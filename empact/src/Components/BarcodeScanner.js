@@ -35,7 +35,7 @@ class BarcodeScanner extends React.Component {
                 readers : [ "ean_reader"],
             },
             locate: true,
-            
+
         }, function(err) {
             if (err) {
                 return console.log(err);
@@ -60,8 +60,12 @@ class BarcodeScanner extends React.Component {
                     imageURL
                     price
                     weight
-                    company
-                    environmentalData: {
+                    company{
+                      id
+                      name
+                      logoURL
+                    }
+                    environmentalData {
                         origin
                         transport
                         transportCO2
